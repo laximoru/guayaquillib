@@ -4,3 +4,4 @@ vendor/
 revision.json
 composer.lock
 composer.phar
+/tests/index.php
