@@ -1,0 +1,6 @@
+syntax: glob
+vendor/
+.idea/
+revision.json
+composer.lock
+composer.phar
