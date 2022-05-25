@@ -39,7 +39,7 @@ class PartObject extends BaseObject
     protected $name;
 
     /**
-     * @var PartObject[]
+     * @var PartCrossObject[]
      */
     protected $replacements = [];
 
@@ -116,7 +116,7 @@ class PartObject extends BaseObject
     }
 
     /**
-     * @return PartObject[]
+     * @return PartCrossObject[]
      */
     public function getReplacements(): array
     {
