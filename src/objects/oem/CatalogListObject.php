@@ -8,14 +8,20 @@ use SimpleXMLElement;
 
 class CatalogListObject extends BaseObject
 {
+    /**
+     * @var CatalogObject[]
+     */
     protected $catalogs;
 
+    /**
+     * @var string[]
+     */
     protected $examples;
 
     /**
-     * @return mixed
+     * @return CatalogObject[]
      */
-    public function getCatalogs()
+    public function getCatalogs(): array
     {
         return $this->catalogs;
     }
@@ -23,7 +29,7 @@ class CatalogListObject extends BaseObject
     /**
      * @return mixed
      */
-    public function getExamples()
+    public function getExamples(): array
     {
         return $this->examples;
     }
