@@ -16,7 +16,7 @@ class CategoryObject extends BaseObject
     /**
      * @var CategoryObject[]|null
      */
-    protected $childrens;
+    protected $childrens = [];
 
     /**
      * @var string

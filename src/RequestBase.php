@@ -63,7 +63,7 @@ abstract class RequestBase
             'FindOEMCorrection' => 'am\PartListObject/array',
         ];
     /** @var GuayaquilSoapWrapper */
-    protected $soap;
+    public $soap;
 
     /**
      * @param string $login
@@ -77,10 +77,10 @@ abstract class RequestBase
 
     /**
      * @param Command $command
-     * @return BaseObject
+     * @return mixed
      * @throws Exception
      */
-    public function executeCommand(Command $command): BaseObject
+    public function executeCommand(Command $command)
     {
         $simpleXMLElements = $this->_query($command->getCommand(), $command->getService());
 
