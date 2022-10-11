@@ -47,9 +47,9 @@ class ServiceAm extends RequestBase
         return $this->executeCommand(Am::getManufacturerInfo($manufacturerId, $locale));
     }
 
-    public function findReplacements(int $partId, string $locale = 'ru_RU'): SecondLevelReplacement
+    public function findReplacements(int $partId, string $locale = 'ru_RU', bool $crossOriginals = false): SecondLevelReplacement
     {
-        return $this->executeCommand(Am::findReplacements($partId, $locale));
+        return $this->executeCommand(Am::findReplacements($partId, $locale, $crossOriginals));
     }
 
     public function findOemCorrection(string $oem, string $locale = 'ru_RU'): PartListObject

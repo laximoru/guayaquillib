@@ -67,11 +67,12 @@ class Am
         ], 'am');
     }
 
-    public static function findReplacements(int $partId, string $locale = 'ru_RU'): Command
+    public static function findReplacements(int $partId, string $locale = 'ru_RU', bool $crossOriginals = false): Command
     {
         return new Command('FindReplacements', [
             'Locale' => $locale,
             'DetailId' => $partId,
+            'CrossOriginals' => $crossOriginals ? 'true' : 'false',
         ], 'am');
     }
 
