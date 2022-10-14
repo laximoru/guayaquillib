@@ -59,7 +59,7 @@ abstract class RequestBase
 
             'ListManufacturer' => 'am\ManufacturerListObject/single',
             'ManufacturerInfo' => 'am\ManufacturerObject/single',
-            'FindReplacements' => 'am\SecondLevelReplacement/single',
+            'FindReplacements' => 'am\SecondLevelReplacementList/array',
             'FindOEMCorrection' => 'am\PartListObject/array',
         ];
     /** @var GuayaquilSoapWrapper */

@@ -6,7 +6,7 @@ use Exception;
 use GuayaquilLib\objects\am\ManufacturerListObject;
 use GuayaquilLib\objects\am\ManufacturerObject;
 use GuayaquilLib\objects\am\PartListObject;
-use GuayaquilLib\objects\am\SecondLevelReplacement;
+use GuayaquilLib\objects\am\SecondLevelReplacementList;
 
 class ServiceAm extends RequestBase
 {
@@ -47,7 +47,7 @@ class ServiceAm extends RequestBase
         return $this->executeCommand(Am::getManufacturerInfo($manufacturerId, $locale));
     }
 
-    public function findReplacements(int $partId, string $locale = 'ru_RU', bool $crossOriginals = false): SecondLevelReplacement
+    public function findReplacements(int $partId, string $locale = 'ru_RU', bool $crossOriginals = false): SecondLevelReplacementList
     {
         return $this->executeCommand(Am::findReplacements($partId, $locale, $crossOriginals));
     }
