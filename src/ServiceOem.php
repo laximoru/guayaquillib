@@ -10,6 +10,7 @@ use GuayaquilLib\objects\oem\GroupObject;
 use GuayaquilLib\objects\oem\ImageMapObject;
 use GuayaquilLib\objects\oem\PartListObject;
 use GuayaquilLib\objects\oem\PartReferencesListObject;
+use GuayaquilLib\objects\oem\PartShortListObject;
 use GuayaquilLib\objects\oem\QuickDetailListObject;
 use GuayaquilLib\objects\oem\UnitListObject;
 use GuayaquilLib\objects\oem\UnitObject;
@@ -112,6 +113,11 @@ class ServiceOem extends RequestBase
     public function findPartInVehicle(string $catalog, string $ssd, string $oem, string $locale = 'ru_RU'): QuickDetailListObject
     {
         return $this->executeCommand(Oem::findPartInVehicle($catalog, $ssd, $oem, $locale));
+    }
+
+    public function findPartInVehicleByName(string $catalog, string $vehicleId, string $ssd, string $partName, string $locale = 'ru_RU'): PartShortListObject
+    {
+        return $this->executeCommand(Oem::findPartInVehicleByName($catalog, $vehicleId, $ssd, $partName, $locale));
     }
 
     public function getFilterByUnit(string $catalog, string $vehicleId, string $ssd, string $unitId, string $filter, string $locale = 'ru_RU'): FilterObject

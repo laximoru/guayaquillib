@@ -54,6 +54,8 @@ abstract class RequestBase
             'FindApplicableVehicles' => 'oem\VehicleListObject/array',
             'GetOEMPartApplicability' => 'oem\QuickDetailListObject/array',
 
+            'SearchVehicleDetails' => 'oem\PartShortListObject/array',
+
             'FindOEM' => 'am\PartListObject/array',
             'FindDetails' => 'am\PartListObject/array',
 

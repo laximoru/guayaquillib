@@ -215,4 +215,15 @@ class Oem
             'Locale' => $locale
         ], 'oem');
     }
+
+    public static function findPartInVehicleByName(string $catalog, string $vehicleId, string $ssd, string $partName, string $locale = 'ru_RU'): Command
+    {
+        return new Command('SearchVehicleDetails', [
+            'Catalog' => $catalog,
+            'VehicleId' => $vehicleId,
+            'ssd' => $ssd,
+            'Query' => $partName,
+            'Locale' => $locale
+        ], 'oem');
+    }
 }
