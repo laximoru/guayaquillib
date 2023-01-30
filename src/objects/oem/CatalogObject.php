@@ -13,6 +13,7 @@ class CatalogObject extends BaseObject
     public const FEATURE_WIZARD2 = 'wizardsearch2';
     public const FEATURE_QUICK_GROUPS = 'quickgroups';
     public const FEATURE_APPLICABILITY = 'detailapplicability';
+    public const FEATURE_PART_BY_NAME_SEARCH = 'fulltextsearch';
 
     /**
      * @var string
@@ -81,7 +82,7 @@ class CatalogObject extends BaseObject
 
     public function getVinSearchFeature(): ?FeatureObject
     {
-        return $this->getFeature('vinsearch');
+        return $this->getFeature(self::FEATURE_VIN_SEARCH);
     }
 
     public function getFeature(string $name): ?FeatureObject
@@ -97,22 +98,27 @@ class CatalogObject extends BaseObject
 
     public function getFrameSearchFeature(): ?FeatureObject
     {
-        return $this->getFeature('framesearch');
+        return $this->getFeature(self::FEATURE_FRAME_SEARCH);
     }
 
     public function getWizard2Feature(): ?FeatureObject
     {
-        return $this->getFeature('wizardsearch2');
+        return $this->getFeature(self::FEATURE_WIZARD2);
     }
 
     public function getQuickGroupsFeature(): ?FeatureObject
     {
-        return $this->getFeature('quickgroups');
+        return $this->getFeature(self::FEATURE_QUICK_GROUPS);
     }
 
     public function getDetailApplicabilityFeature(): ?FeatureObject
     {
-        return $this->getFeature('detailapplicability');
+        return $this->getFeature(self::FEATURE_APPLICABILITY);
+    }
+
+    public function getPartByNameSearchFeature(): ?FeatureObject
+    {
+        return $this->getFeature(self::FEATURE_PART_BY_NAME_SEARCH);
     }
 
     /**
