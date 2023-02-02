@@ -52,7 +52,7 @@ class WizardStepObject extends BaseObject
     /**
      * @var WizardStepOptionObject[]
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * @return bool

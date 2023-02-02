@@ -44,7 +44,7 @@ class PartObject extends BaseObject
     protected $attributes = [];
 
     /**
-     * @var array
+     * @var PartLink[]
      */
     protected $links = [];
 
