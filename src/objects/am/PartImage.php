@@ -38,7 +38,7 @@ class PartImage extends BaseObject
     /**
      * @return string
      */
-    public function getThumbnailNilename(): string
+    public function getThumbnailFilename(): string
     {
         return $this->thumbnailFilename;
     }
