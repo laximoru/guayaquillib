@@ -41,6 +41,11 @@ class CatalogObject extends BaseObject
     protected $operations = [];
 
     /**
+     * @var string[]
+     */
+    protected $permissions = null;
+
+    /**
      * @return string
      */
     public function getBrand(): string
@@ -121,6 +126,50 @@ class CatalogObject extends BaseObject
         return $this->getFeature(self::FEATURE_PART_BY_NAME_SEARCH);
     }
 
+    public function permissionsLoaded(): bool
+    {
+        return is_array($this->permissions);
+    }
+
+    private function hideFeature(string $featureName)
+    {
+        foreach ($this->features as $index => $feature) {
+            if ($feature->getName() == $featureName) {
+                unset($this->features[$index]);
+                return;
+            }
+        }
+    }
+
+    protected function hideDeniedFeatures()
+    {
+        if ($this->permissionsLoaded()) {
+            if (!$this->permissionGranted('SEARCHVEHICLEDETAILS')) {
+                $this->hideFeature('fulltextsearch');
+            }
+            if (!$this->permissionGranted('GETOEMPARTAPPLICABILITY')) {
+                $this->hideFeature('detailapplicability');
+            }
+            if (!$this->permissionGranted('LISTQUICKGROUP')) {
+                $this->hideFeature('quickgroups');
+            }
+            if (!$this->permissionGranted('GETWIZARD2')) {
+                $this->hideFeature('wizardsearch2');
+            }
+            if (!$this->permissionGranted('FINDVEHICLE')) {
+                $this->hideFeature('vinsearch');
+            }
+            if (!$this->permissionGranted('EXECCUSTOMOPERATION')) {
+                $this->operations = [];
+            }
+        }
+    }
+
+    public function permissionGranted($permission): bool
+    {
+        return array_key_exists($permission, $this->permissions);
+    }
+
     /**
      * @param SimpleXMLElement $data
      * @throws Exception
@@ -142,5 +191,15 @@ class CatalogObject extends BaseObject
                 $this->operations[] = new CatalogOperationObject($operation);
             }
         }
+        if (isset($data->permissions) && $data->permissions instanceof SimpleXMLElement && $data->permissions->permission instanceof SimpleXMLElement) {
+            $this->permissions = [];
+            foreach ($data->permissions->permission as $permission) {
+                $permName = (string)$permission;
+                $this->permissions[$permName] = true;
+            }
+
+            $this->hideDeniedFeatures();
+        }
     }
+
 }

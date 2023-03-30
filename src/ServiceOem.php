@@ -25,9 +25,9 @@ class ServiceOem extends RequestBase
         return $this->executeCommand(Oem::listCatalogs($locale));
     }
 
-    function getCatalogInfo(string $catalog, string $locale = 'ru_RU'): CatalogObject
+    function getCatalogInfo(string $catalog, string $locale = 'ru_RU', bool $withPermissions = false): CatalogObject
     {
-        return $this->executeCommand(Oem::getCatalogInfo($catalog, $locale));
+        return $this->executeCommand(Oem::getCatalogInfo($catalog, $locale, $withPermissions));
     }
 
     public function findVehicle(string $identString, string $locale = 'ru_RU'): VehicleListObject

@@ -11,12 +11,17 @@ class Oem
         ], 'oem');
     }
 
-    public static function getCatalogInfo(string $catalog, string $locale = 'ru_RU'): Command
+    public static function getCatalogInfo(string $catalog, string $locale = 'ru_RU', bool $withPermissions = false): Command
     {
-        return new Command('GetCatalogInfo', [
+        $params = [
             'Locale' => $locale,
             'Catalog' => $catalog
-        ], 'oem');
+        ];
+        if ($withPermissions) {
+            $params['withPermissions'] = 'true';
+        }
+
+        return new Command('GetCatalogInfo', $params, 'oem');
     }
 
     public static function findVehicle(string $identString, string $locale = 'ru_RU'): Command
