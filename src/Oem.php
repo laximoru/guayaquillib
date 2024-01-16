@@ -56,6 +56,7 @@ class Oem
             'Locale' => $locale,
             'PlateNumber' => $plate,
             'CountryCode' => 'ru',
+            'Localized' => 'true'
         ], 'oem');
     }
 
