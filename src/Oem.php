@@ -50,6 +50,15 @@ class Oem
         ], 'oem');
     }
 
+    public static function findVehicleByPlateNumber(string $plate, string $locale = 'ru_RU'): Command
+    {
+        return new Command('FindVehicleByPlateNumber', [
+            'Locale' => $locale,
+            'PlateNumber' => $plate,
+            'CountryCode' => 'ru',
+        ], 'oem');
+    }
+
     public static function findVehicleByWizard2(string $catalog, string $ssd, string $locale = 'ru_RU'): Command
     {
         return new Command('FindVehicleByWizard2', [
