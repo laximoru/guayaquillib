@@ -45,6 +45,11 @@ class ServiceOem extends RequestBase
         return $this->executeCommand(Oem::findVehicleByFrameNo($frameNo, $locale));
     }
 
+    public function findVehicleByPlateNumber(string $plate, string $locale = 'ru_RU'): VehicleListObject
+    {
+        return $this->executeCommand(Oem::findVehicleByPlateNumber($plate, $locale));
+    }
+
     public function findVehicleByWizard2(string $catalog, string $ssd, string $locale = 'ru_RU'): VehicleListObject
     {
         return $this->executeCommand(Oem::findVehicleByWizard2($catalog, $ssd, $locale));

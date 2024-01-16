@@ -31,6 +31,7 @@ abstract class RequestBase
 
             'FindVehicleByVIN' => 'oem\VehicleListObject/array',
             'FindVehicleByFrameNo' => 'oem\VehicleListObject/array',
+            'FindVehicleByPlateNumber' => 'oem\VehicleListObject/array',
             'ExecCustomOperation' => 'oem\VehicleListObject/array',
             'FindVehicle' => 'oem\VehicleListObject/array',
             'GetVehicleInfo' => 'oem\VehicleObject/single',
