@@ -13,14 +13,23 @@ class Command
     /** @var string */
     protected $service;
 
+    /** @var string */
+    protected $responseClassName;
+
+    /** @var bool */
+    protected $isResponseArray;
+
     /** @var string[] */
     protected $params;
 
     /**
-     * @param string $command
+     * @param string $operation
      * @param string[] $params
+     * @param string $service
+     * @param string $responseClassName
+     * @param bool $isResponseArray
      */
-    public function __construct(string $operation, array $params, string $service)
+    public function __construct(string $operation, array $params, string $service, string $responseClassName, bool $isResponseArray)
     {
         $this->operation = $operation;
         $this->params = $params;
@@ -38,6 +47,8 @@ class Command
 
         $this->command = $command;
         $this->service = $service;
+        $this->responseClassName = $responseClassName;
+        $this->isResponseArray = $isResponseArray;
     }
 
     /**
@@ -72,5 +83,13 @@ class Command
         return $this->service;
     }
 
+    public function getResponseClassName(): string
+    {
+        return $this->responseClassName;
+    }
 
+    public function isResponseArray(): bool
+    {
+        return $this->isResponseArray;
+    }
 }

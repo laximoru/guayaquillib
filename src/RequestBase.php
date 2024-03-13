@@ -24,47 +24,6 @@ use SoapFault;
 
 abstract class RequestBase
 {
-    protected static $typeMap =
-        [
-            'GetCatalogInfo' => 'oem\CatalogObject/single',
-            'ListCatalogs' => 'oem\CatalogListObject/array',
-
-            'FindVehicleByVIN' => 'oem\VehicleListObject/array',
-            'FindVehicleByFrameNo' => 'oem\VehicleListObject/array',
-            'FindVehicleByPlateNumber' => 'oem\VehicleListObject/array',
-            'ExecCustomOperation' => 'oem\VehicleListObject/array',
-            'FindVehicle' => 'oem\VehicleListObject/array',
-            'GetVehicleInfo' => 'oem\VehicleObject/single',
-
-            'GetWizard2' => 'oem\WizardObject/array',
-            'FindVehicleByWizard2' => 'oem\VehicleListObject/array',
-
-            'ListQuickGroups' => 'oem\GroupObject/single',
-            'ListQuickDetail' => 'oem\QuickDetailListObject/array',
-
-            'ListCategories' => 'oem\CategoryListObject/array',
-            'ListUnits' => 'oem\UnitListObject/array',
-            'GetUnitInfo' => 'oem\UnitObject/single',
-            'ListImageMapByUnit' => 'oem\ImageMapObject/array',
-            'ListDetailsByUnit' => 'oem\PartListObject/array',
-
-            'GetFilterByUnit' => 'oem\FilterObject/array',
-            'GetFilterByDetail' => 'oem\FilterObject/array',
-
-            'OEMPartReferences' => 'oem\PartReferencesListObject/array',
-            'FindApplicableVehicles' => 'oem\VehicleListObject/array',
-            'GetOEMPartApplicability' => 'oem\QuickDetailListObject/array',
-
-            'SearchVehicleDetails' => 'oem\PartShortListObject/array',
-
-            'FindOEM' => 'am\PartListObject/array',
-            'FindDetails' => 'am\PartListObject/array',
-
-            'ListManufacturer' => 'am\ManufacturerListObject/single',
-            'ManufacturerInfo' => 'am\ManufacturerObject/single',
-            'FindReplacements' => 'am\SecondLevelReplacementList/array',
-            'FindOEMCorrection' => 'am\PartListObject/array',
-        ];
     /** @var GuayaquilSoapWrapper */
     public $soap;
 
@@ -88,7 +47,7 @@ abstract class RequestBase
         $simpleXMLElements = $this->_query($command->getCommand(), $command->getService());
 
         foreach ($simpleXMLElements as $xml) {
-            return $this->getObject($xml);
+            return $this->getObject($xml, $command->getResponseClassName(), $command->isResponseArray());
         }
 
         throw new Exception('Data not found');
@@ -172,17 +131,9 @@ abstract class RequestBase
      * @return BaseObject
      * @throws Exception
      */
-    protected function getObject(SimpleXMLElement $data): BaseObject
+    protected function getObject(SimpleXMLElement $data, string $className, bool $isArray): BaseObject
     {
-        $elementName = $data->getName();
-        if (array_key_exists($elementName, self::$typeMap)) {
-            $mapType = self::$typeMap[$elementName];
-            list($classSuffix, $multiplicity) = explode('/', $mapType);
-            $className = 'GuayaquilLib\objects\\' . $classSuffix;
-            return new $className($multiplicity == 'single' ? $data->row : $data);
-        } else {
-            throw new Exception('Unable to map result, unknown command type ' . $elementName);
-        }
+        return new $className($isArray ? $data : $data->row);
     }
 
     /**
@@ -197,6 +148,7 @@ abstract class RequestBase
         $resultObjects = [];
         $service = false;
 
+        $indexedCommands = [];
         /** @var $query Command */
         foreach ($commands as $command) {
             if ($service === false) {
@@ -206,6 +158,7 @@ abstract class RequestBase
             }
 
             $queries[] = $command->getCommand();
+            $indexedCommands[] = $command;
 
             if (count($queries) == 5) {
                 $partialResult = $this->_query(implode("\n", $queries), $service);
@@ -221,7 +174,8 @@ abstract class RequestBase
 
         /** @var SimpleXMLElement $element */
         foreach ($result as $index => $element) {
-            $resultObjects[$index] = $this->getObject($element);
+            $command = $indexedCommands[$index];
+            $resultObjects[$index] = $this->getObject($element, $command->getResponseClassName(), $command->isResponseArray());
         }
 
         return $resultObjects;

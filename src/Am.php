@@ -2,6 +2,11 @@
 
 namespace GuayaquilLib;
 
+use GuayaquilLib\objects\am\ManufacturerListObject;
+use GuayaquilLib\objects\am\ManufacturerObject;
+use GuayaquilLib\objects\am\PartListObject;
+use GuayaquilLib\objects\am\SecondLevelReplacementList;
+
 class Am
 {
     public const optionsCrosses = 'crosses';
@@ -32,7 +37,7 @@ class Am
             'OEM' => $oem,
             'ReplacementTypes' => count($replacementTypes) ? implode(',', $replacementTypes) : 'default',
             'Options' => implode(',', $options),
-        ], 'am');
+        ], 'am', PartListObject::class, true);
     }
 
     /**
@@ -49,14 +54,14 @@ class Am
             'DetailId' => $partId,
             'ReplacementTypes' => count($replacementTypes) ? implode(',', $replacementTypes) : 'default',
             'Options' => implode(',', $options),
-        ], 'am');
+        ], 'am', PartListObject::class, true);
     }
 
     public static function listManufacturer(string $locale = 'ru_RU'): Command
     {
         return new Command('ListManufacturer', [
             'Locale' => $locale,
-        ], 'am');
+        ], 'am', ManufacturerListObject::class, false);
     }
 
     public static function getManufacturerInfo(int $manufacturerId, string $locale = 'ru_RU'): Command
@@ -64,7 +69,7 @@ class Am
         return new Command('ManufacturerInfo', [
             'Locale' => $locale,
             'ManufacturerId' => $manufacturerId,
-        ], 'am');
+        ], 'am', ManufacturerObject::class, false);
     }
 
     public static function findReplacements(int $partId, string $locale = 'ru_RU', bool $crossOriginals = false): Command
@@ -73,7 +78,7 @@ class Am
             'Locale' => $locale,
             'DetailId' => $partId,
             'CrossOriginals' => $crossOriginals ? 'true' : 'false',
-        ], 'am');
+        ], 'am', SecondLevelReplacementList::class, true);
     }
 
     public static function findOemCorrection(string $oem, string $locale = 'ru_RU'): Command
@@ -81,6 +86,6 @@ class Am
         return new Command('FindOEMCorrection', [
             'Locale' => $locale,
             'OEM' => $oem,
-        ], 'am');
+        ], 'am', PartListObject::class, true);
     }
 }

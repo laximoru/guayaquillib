@@ -2,13 +2,29 @@
 
 namespace GuayaquilLib;
 
+use GuayaquilLib\objects\oem\CatalogListObject;
+use GuayaquilLib\objects\oem\CatalogObject;
+use GuayaquilLib\objects\oem\CategoryListObject;
+use GuayaquilLib\objects\oem\FilterObject;
+use GuayaquilLib\objects\oem\GroupObject;
+use GuayaquilLib\objects\oem\ImageMapObject;
+use GuayaquilLib\objects\oem\PartListObject;
+use GuayaquilLib\objects\oem\PartReferencesListObject;
+use GuayaquilLib\objects\oem\PartShortListObject;
+use GuayaquilLib\objects\oem\QuickDetailListObject;
+use GuayaquilLib\objects\oem\UnitListObject;
+use GuayaquilLib\objects\oem\UnitObject;
+use GuayaquilLib\objects\oem\VehicleListObject;
+use GuayaquilLib\objects\oem\VehicleObject;
+use GuayaquilLib\objects\oem\WizardObject;
+
 class Oem
 {
     public static function listCatalogs(string $locale = 'ru_RU'): Command
     {
         return new Command('ListCatalogs', [
             'Locale' => $locale
-        ], 'oem');
+        ], 'oem', CatalogListObject::class, true);
     }
 
     public static function getCatalogInfo(string $catalog, string $locale = 'ru_RU', bool $withPermissions = false): Command
@@ -21,7 +37,7 @@ class Oem
             $params['withPermissions'] = 'true';
         }
 
-        return new Command('GetCatalogInfo', $params, 'oem');
+        return new Command('GetCatalogInfo', $params, 'oem', CatalogObject::class, false);
     }
 
     public static function findVehicle(string $identString, string $locale = 'ru_RU'): Command
@@ -29,7 +45,7 @@ class Oem
         return new Command('FindVehicle', [
             'Locale' => $locale,
             'IdentString' => $identString
-        ], 'oem');
+        ], 'oem', VehicleListObject::class, true);
     }
 
     public static function findVehicleByVin(string $vin, string $locale = 'ru_RU'): Command
@@ -38,7 +54,7 @@ class Oem
             'Locale' => $locale,
             'VIN' => $vin,
             'Localized' => 'true'
-        ], 'oem');
+        ], 'oem', VehicleListObject::class, true);
     }
 
     public static function findVehicleByFrameNo(string $frameNo, string $locale = 'ru_RU'): Command
@@ -47,7 +63,7 @@ class Oem
             'Locale' => $locale,
             'FrameNo' => $frameNo,
             'Localized' => 'true'
-        ], 'oem');
+        ], 'oem', VehicleListObject::class, true);
     }
 
     public static function findVehicleByPlateNumber(string $plate, string $locale = 'ru_RU'): Command
@@ -57,7 +73,7 @@ class Oem
             'PlateNumber' => $plate,
             'CountryCode' => 'ru',
             'Localized' => 'true'
-        ], 'oem');
+        ], 'oem', VehicleListObject::class, true);
     }
 
     public static function findVehicleByWizard2(string $catalog, string $ssd, string $locale = 'ru_RU'): Command
@@ -67,7 +83,7 @@ class Oem
             'Catalog' => $catalog,
             'ssd' => $ssd,
             'Localized' => 'true'
-        ], 'oem');
+        ], 'oem', VehicleListObject::class, true);
     }
 
     public static function execCustomOperation(string $catalog, string $operation, array $data, string $locale = 'ru_RU'): Command
@@ -76,7 +92,7 @@ class Oem
             'Locale' => $locale,
             'Catalog' => $catalog,
             'operation' => $operation
-        ], $data), 'oem');
+        ], $data), 'oem', VehicleListObject::class, true);
     }
 
     public static function getVehicleInfo(string $catalog, string $vehicleId, string $ssd, string $locale = 'ru_RU'): Command
@@ -87,7 +103,7 @@ class Oem
             'VehicleId' => $vehicleId,
             'ssd' => $ssd,
             'Localized' => 'true'
-        ], 'oem');
+        ], 'oem', VehicleObject::class, false);
     }
 
     public static function getWizard2(string $catalog, $ssd = '', string $locale = 'ru_RU'): Command
@@ -96,7 +112,7 @@ class Oem
             'Locale' => $locale,
             'Catalog' => $catalog,
             'ssd' => $ssd
-        ], 'oem');
+        ], 'oem', WizardObject::class, true);
     }
 
     public static function listCategories(string $catalog, string $vehicleId, string $ssd, string $categoryId = '-1', string $locale = 'ru_RU'): Command
@@ -107,7 +123,7 @@ class Oem
             'VehicleId' => $vehicleId,
             'CategoryId' => $categoryId,
             'ssd' => $ssd,
-        ], 'oem');
+        ], 'oem', CategoryListObject::class, true);
     }
 
     public static function listUnits(string $catalog, string $vehicleId, string $ssd, string $categoryId = '-1', string $locale = 'ru_RU'): Command
@@ -119,7 +135,7 @@ class Oem
             'CategoryId' => $categoryId,
             'ssd' => $ssd,
             'Localized' => 'true'
-        ], 'oem');
+        ], 'oem', UnitListObject::class, true);
     }
 
     public static function getUnitInfo(string $catalog, string $ssd, string $unitId, string $locale = 'ru_RU'): Command
@@ -130,9 +146,8 @@ class Oem
             'UnitId' => $unitId,
             'ssd' => $ssd,
             'Localized' => 'true'
-        ], 'oem');
+        ], 'oem', UnitObject::class, false);
     }
-
 
     public static function listImageMapByUnit(string $catalog, string $ssd, string $unitId): Command
     {
@@ -141,7 +156,7 @@ class Oem
             'UnitId' => $unitId,
             'ssd' => $ssd,
             'WithLinks' => 'true'
-        ], 'oem');
+        ], 'oem', ImageMapObject::class, true);
     }
 
     public static function listPartsByUnit(string $catalog, string $ssd, string $unitId, string $locale = 'ru_RU'): Command
@@ -153,7 +168,7 @@ class Oem
             'ssd' => $ssd,
             'Localized' => 'true',
             'WithLinks' => 'true'
-        ], 'oem');
+        ], 'oem', PartListObject::class, true);
     }
 
     public static function getFilterByUnit(string $catalog, string $vehicleId, string $ssd, string $unitId, string $filter, string $locale = 'ru_RU'): Command
@@ -165,7 +180,7 @@ class Oem
             'VehicleId' => $vehicleId,
             'UnitId' => $unitId,
             'ssd' => $ssd
-        ], 'oem');
+        ], 'oem', FilterObject::class, true);
     }
 
     public static function getFilterByPart(string $catalog, string $vehicleId, string $ssd, string $unitId, string $partId, string $filter, string $locale = 'ru_RU'): Command
@@ -178,7 +193,7 @@ class Oem
             'UnitId' => $unitId,
             'DetailId' => $partId,
             'ssd' => $ssd
-        ], 'oem');
+        ], 'oem', FilterObject::class, true);
     }
 
     public static function listQuickGroup(string $catalog, string $vehicleId, string $ssd, string $locale = 'ru_RU'): Command
@@ -188,7 +203,7 @@ class Oem
             'Catalog' => $catalog,
             'VehicleId' => $vehicleId,
             'ssd' => $ssd
-        ], 'oem');
+        ], 'oem', GroupObject::class, false);
     }
 
     public static function listQuickDetail(string $catalog, string $vehicleId, string $ssd, string $groupId, string $locale = 'ru_RU'): Command
@@ -201,7 +216,7 @@ class Oem
             'ssd' => $ssd,
             'Localized' => 'true',
             'All' => '1'
-        ], 'oem');
+        ], 'oem', QuickDetailListObject::class, true);
     }
 
     public static function findCatalogsByOem(string $oem, string $locale = 'ru_RU'): Command
@@ -209,7 +224,7 @@ class Oem
         return new Command('FINDPARTREFERENCES', [
             'Locale' => $locale,
             'OEM' => $oem
-        ], 'oem');
+        ], 'oem', PartReferencesListObject::class, true);
     }
 
     public static function findVehicleByOem(string $catalog, string $oem, string $locale = 'ru_RU'): Command
@@ -218,7 +233,7 @@ class Oem
             'OEM' => $oem,
             'Catalog' => $catalog,
             'Locale' => $locale
-        ], 'oem');
+        ], 'oem', VehicleListObject::class, true);
     }
 
     public static function findPartInVehicle(string $catalog, string $ssd, string $oem, string $locale = 'ru_RU'): Command
@@ -228,7 +243,7 @@ class Oem
             'OEM' => $oem,
             'ssd' => $ssd,
             'Locale' => $locale
-        ], 'oem');
+        ], 'oem', QuickDetailListObject::class, true);
     }
 
     public static function findPartInVehicleByName(string $catalog, string $vehicleId, string $ssd, string $partName, string $locale = 'ru_RU'): Command
@@ -239,6 +254,6 @@ class Oem
             'ssd' => $ssd,
             'Query' => $partName,
             'Locale' => $locale
-        ], 'oem');
+        ], 'oem', PartShortListObject::class, true);
     }
 }
